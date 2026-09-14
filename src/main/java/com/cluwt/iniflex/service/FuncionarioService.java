@@ -1,5 +1,6 @@
 package com.cluwt.iniflex.service;
 
+import com.cluwt.iniflex.exception.FuncionarioNaoEncontradoException;
 import com.cluwt.iniflex.model.Funcionario;
 
 import java.math.BigDecimal;
@@ -26,7 +27,10 @@ public final class FuncionarioService {
     }
 
     public static void removerPorNome(List<Funcionario> funcionarios, String nome) {
-        funcionarios.removeIf(f -> f.getNome().equals(nome));
+        boolean removido = funcionarios.removeIf(f -> f.getNome().equals(nome));
+        if (!removido) {
+            throw new FuncionarioNaoEncontradoException(nome);
+        }
     }
 
     public static void aplicarAumento(List<Funcionario> funcionarios, BigDecimal percentual) {
