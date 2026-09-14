@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desafio Prático Iniflex — Histórico de Desenvolvimento</title>
+  <meta name="description" content="Linha do tempo de desenvolvimento do desafio prático Iniflex/Gupy: PRs, dificuldades reais e contribuição humana no processo.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">Desafio Prático Iniflex &middot; Gupy</p>
+      <h1>Histórico de desenvolvimento</h1>
+      <p class="lede">
+        Como o projeto foi construído: a linha do tempo real das PRs, as dificuldades que
+        de fato apareceram no caminho, e onde entrou contribuição humana no processo.
+      </p>
+      <nav class="top-nav" aria-label="Navegação da página">
+        <a href="#visao-geral">Visão geral</a>
+        <a href="#timeline">Linha do tempo</a>
+        <a href="#dificuldades">Dificuldades</a>
+        <a href="#contribuicao">Contribuição</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="visao-geral" class="section">
+      <h2>Visão geral do projeto</h2>
+      <p>
+        O desafio pede um sistema de console em Java que cadastra os funcionários de uma
+        indústria e executa uma sequência de operações sobre essa lista: remoção, reajuste
+        salarial, agrupamento por função, filtros por data de nascimento, ordenação,
+        cálculo de idade e totalizações financeiras — 12 itens ao todo, numerados no
+        próprio enunciado.
+      </p>
+      <p>
+        A solução separa o código em pacotes por responsabilidade (<code>model</code>,
+        <code>service</code>, <code>util</code>, <code>exception</code>), valida os dados
+        de entrada em vez de aceitar qualquer coisa silenciosamente, e tem 31 testes
+        JUnit 5 cobrindo desde a validação de domínio até a execução completa do programa.
+      </p>
+      <a class="repo-link" href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt" target="_blank" rel="noopener">
+        Ver repositório no GitHub →
+      </a>
+    </section>
+
+    <section id="timeline" class="section">
+      <h2>Linha do tempo de commits e PRs</h2>
+      <p class="section-intro">
+        As 9 pull requests que compuseram o projeto, em ordem cronológica. Cada uma foi
+        revisada e mergeada individualmente — clique em qualquer uma para ver a descrição
+        completa que foi escrita na hora da PR.
+      </p>
+
+      <ol class="timeline" id="timeline-list">
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #1</span>
+            <span class="pr-title">feat: add Pessoa and Funcionario domain classes</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary">Classes de domínio <code>Pessoa</code> e <code>Funcionario</code>, com <code>BigDecimal</code> no lugar de <code>double</code> para o salário, evitando erro de arredondamento.</p>
+          <div class="pr-body" hidden>
+            <p>Criei as classes Pessoa e Funcionario que o enunciado pede (itens 1 e 2).</p>
+            <p>A Pessoa só tem nome e data de nascimento. A Funcionario herda de Pessoa e adiciona salário e função.</p>
+            <p>Usei BigDecimal pro salário em vez de double, porque double pode dar erro de arredondamento na hora de calcular o aumento e a soma dos salários lá na frente.</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/1" target="_blank" rel="noopener">Ver PR #1 no GitHub →</a>
+          </div>
+        </li>
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #2</span>
+            <span class="pr-title">feat: add pt-BR formatting and console table printer</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary"><code>Formatador</code> (data e moeda em pt-BR) e <code>ConsolePrinter</code> (tabelas no console), separados da lógica de negócio.</p>
+          <div class="pr-body" hidden>
+            <p>Aqui entram duas classes de apoio, antes de mexer na lógica dos funcionários:</p>
+            <p>Formatador: formata a data em dd/MM/yyyy e os valores em reais no formato brasileiro (ponto no milhar, vírgula no decimal), que é um dos requisitos do item 3.3.</p>
+            <p>ConsolePrinter: monta as tabelas que aparecem no console, calculando a largura de cada coluna com base no tamanho dos dados, pra não ficar torto se o nome for grande ou pequeno.</p>
+            <p>Separei isso em classes próprias porque ia ficar tudo misturado dentro da Principal se juntasse formatação com a lógica dos funcionários.</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/2" target="_blank" rel="noopener">Ver PR #2 no GitHub →</a>
+          </div>
+        </li>
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #3</span>
+            <span class="pr-title">feat: add employee business rules service</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary"><code>FuncionarioService</code> com as regras de negócio do item 3: remover, aumentar salário, agrupar, filtrar aniversariantes, ordenar, somar e calcular salários mínimos.</p>
+          <div class="pr-body" hidden>
+            <p>Aqui entra a parte de regra de negócio, na classe FuncionarioService:</p>
+            <ul>
+              <li>remover o João da lista (3.2)</li>
+              <li>aplicar o aumento de 10% (3.4)</li>
+              <li>agrupar por função (3.5)</li>
+              <li>filtrar quem faz aniversário em outubro e dezembro (3.8)</li>
+              <li>achar o funcionário mais velho (3.9)</li>
+              <li>ordenar por nome (3.10)</li>
+              <li>somar os salários (3.11)</li>
+              <li>calcular quantos salários mínimos cada um ganha (3.12)</li>
+            </ul>
+            <p>Usei stream na maior parte (agrupar, filtrar, ordenar, somar) porque fica mais direto de ler. Pra remover o João e aplicar o aumento não usei stream porque ali eu só preciso alterar a lista que já existe, não criar uma nova.</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/3" target="_blank" rel="noopener">Ver PR #3 no GitHub →</a>
+          </div>
+        </li>
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #4</span>
+            <span class="pr-title">feat: add Principal entry point covering all requirements</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary">Classe <code>Principal</code> orquestrando tudo na ordem do enunciado; rodei o programa antes de commitar pra conferir os valores.</p>
+          <div class="pr-body" hidden>
+            <p>Essa é a classe Principal, que é o que o item 3 do enunciado pede. Ela chama tudo que fiz nas outras classes, na ordem que o teste pede: monta a lista dos 10 funcionários, remove o João, imprime, aplica o aumento, agrupa por função, imprime aniversariante, acha o mais velho, ordena por nome, soma os salários e calcula os salários mínimos.</p>
+            <p>Rodei o programa antes de commitar pra conferir se os valores batiam (por exemplo, o funcionário mais velho dá certo: o Caio, com 65 anos).</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/4" target="_blank" rel="noopener">Ver PR #4 no GitHub →</a>
+          </div>
+        </li>
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #5</span>
+            <span class="pr-title">docs: add README with setup guide and requirements checklist</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary">Primeiro README explicando o projeto, os requisitos do enunciado e como rodar.</p>
+          <div class="pr-body" hidden>
+            <p>Coloquei um README explicando o projeto, o que cada requisito do teste pede, a estrutura das pastas e como rodar (mvn compile e mvn exec:java), pra facilitar pra quem for avaliar entender rápido o que tem em cada parte.</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/5" target="_blank" rel="noopener">Ver PR #5 no GitHub →</a>
+          </div>
+        </li>
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #6</span>
+            <span class="pr-title">feat: validate domain invariants and throw exceptions</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary">Validação de invariantes de domínio e a <code>FuncionarioNaoEncontradoException</code> — sem fallback silencioso.</p>
+          <div class="pr-body" hidden>
+            <p>Adicionei validação nas classes Pessoa e Funcionario e criei a FuncionarioNaoEncontradoException.</p>
+            <p>Agora, se alguém tentar criar um funcionário com nome vazio, data nula, salário negativo ou função vazia, dá IllegalArgumentException na hora, em vez de deixar passar um objeto inconsistente. E se tentar remover um funcionário que não existe na lista, lança a FuncionarioNaoEncontradoException com o nome que foi procurado.</p>
+            <p>Não coloquei nenhum tipo de fallback (tipo "se vier nulo, usa um valor padrão") porque prefiro que o erro apareça na hora do que esconder um dado errado.</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/6" target="_blank" rel="noopener">Ver PR #6 no GitHub →</a>
+          </div>
+        </li>
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #7</span>
+            <span class="pr-title">test: add unit tests with JUnit 5</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary">Primeira leva de testes com JUnit 5 (18 testes) cobrindo modelo, serviço e formatação.</p>
+          <div class="pr-body" hidden>
+            <p>Adicionei JUnit 5 (só em escopo de teste, não vai pro jar final) e criei testes pra cobrir tanto o caminho feliz quanto os erros:</p>
+            <p>FuncionarioTest: aumento de salário calcula certo, e cada validação nova (nome vazio, data nula, salário negativo, função vazia, percentual negativo) realmente lança exceção.</p>
+            <p>FuncionarioServiceTest: remover funcionário existente funciona, remover um que não existe lança FuncionarioNaoEncontradoException, agrupar por função, filtrar aniversariante, achar o mais velho (e o erro de lista vazia), ordenar com acento, somar salário e calcular salário mínimo.</p>
+            <p>FormatadorTest: confere se a data e os valores saem formatados certo em pt-BR.</p>
+            <p>Rodei com mvn test, os 18 testes passam.</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/7" target="_blank" rel="noopener">Ver PR #7 no GitHub →</a>
+          </div>
+        </li>
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #8</span>
+            <span class="pr-title">feat: add more business exceptions</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary">Mais exceções de negócio (nome duplicado, lista vazia) e validação de data de nascimento futura, todas herdando de <code>NegocioException</code>.</p>
+          <div class="pr-body" hidden>
+            <p>Coloquei mais algumas regras de negócio que estavam faltando, com exceções próprias pra cada uma:</p>
+            <p>Criei uma NegocioException como base, e as exceções que já existiam e as novas passam a estender ela (só pra deixar organizado, tipo "essa é uma regra de negócio quebrada", diferente de argumento inválido).</p>
+            <p>FuncionarioDuplicadoException: agora tem um método adicionar() no FuncionarioService que não deixa cadastrar dois funcionários com o mesmo nome.</p>
+            <p>ListaFuncionariosVaziaException: troquei a IllegalStateException genérica que tinha em funcionarioMaisVelho por essa, fica mais claro o que aconteceu.</p>
+            <p>Também validei que a data de nascimento não pode ser uma data futura (isso tava faltando, só validava nulo).</p>
+            <p>Continua sem fallback: se algo estiver errado, estoura a exceção na hora, não tenta "consertar" o dado.</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/8" target="_blank" rel="noopener">Ver PR #8 no GitHub →</a>
+          </div>
+        </li>
+
+        <li class="pr-item">
+          <button class="pr-toggle" aria-expanded="false">
+            <span class="pr-number">PR #9</span>
+            <span class="pr-title">test: cover new exceptions and add end-to-end check</span>
+            <span class="pr-chevron" aria-hidden="true">›</span>
+          </button>
+          <p class="pr-summary">Cobertura das novas exceções e um teste de ponta a ponta rodando o programa inteiro — 31 testes no total.</p>
+          <div class="pr-body" hidden>
+            <p>Aumentei a cobertura de teste em cima do que faltava:</p>
+            <p>PessoaTest: cobre a validação que ainda não tinha teste próprio (nome nulo/vazio, data nula, data no futuro).</p>
+            <p>FuncionarioServiceTest: adicionei os testes do método adicionar() (insere normal e lança FuncionarioDuplicadoException pra nome repetido) e ajustei o teste antigo que esperava IllegalStateException pra agora esperar ListaFuncionariosVaziaException.</p>
+            <p>ConsolePrinterTest: nunca tinha teste nenhum pra essa classe. Capturei o System.out pra conferir que a tabela sai com cabeçalho e dado, que lista vazia não quebra (mostra "nenhum registro encontrado") e que nome muito longo não bagunça o alinhamento.</p>
+            <p>PrincipalIntegrationTest: roda o programa inteiro (igual quem for avaliar vai fazer) e confere a saída contra os valores calculados na mão a partir da tabela do enunciado — soma total, funcionário mais velho, aniversariantes, salário com aumento etc. A idade do Caio é calculada dinamicamente no teste (Period.between), não fixei "65 anos" pra não quebrar o teste no futuro.</p>
+            <p>mvn test roda os 31 testes, todos passando.</p>
+            <a href="https://github.com/Cluwt/desafio-pratico-iniflex-by-cluwt/pull/9" target="_blank" rel="noopener">Ver PR #9 no GitHub →</a>
+          </div>
+        </li>
+
+      </ol>
+    </section>
+
+    <section id="dificuldades" class="section">
+      <h2>Dificuldades reais encontradas</h2>
+      <p class="section-intro">Nada inventado — só o que de fato travou o processo em algum momento.</p>
+      <ul class="card-list">
+        <li class="card">
+          <h3>Versão mínima do Java</h3>
+          <p><code>Locale.of("pt","BR")</code> só existe a partir do Java 19+ — precisou decidir a versão alvo do projeto com isso em mente.</p>
+        </li>
+        <li class="card">
+          <h3>Espaço não-quebrável na moeda</h3>
+          <p>Um teste de formatação de moeda falhou por causa de um espaço não-quebrável (<code> </code>) que o <code>NumberFormat</code> do Java insere entre "R$" e o valor — só foi descoberto rodando o teste, não lendo o código.</p>
+        </li>
+        <li class="card">
+          <h3>Arredondamento explícito em BigDecimal</h3>
+          <p>Cálculo de dinheiro exige <code>RoundingMode</code> explícito em toda divisão/multiplicação de <code>BigDecimal</code>, senão quebra com <code>ArithmeticException</code> em certos valores.</p>
+        </li>
+        <li class="card">
+          <h3>Ordenação de nomes acentuados</h3>
+          <p>Ordenar nomes acentuados (ex: "Heloísa") corretamente exigiu <code>Collator</code> de pt-BR em vez de comparação simples de String.</p>
+        </li>
+        <li class="card">
+          <h3>Tabela dinâmica no console</h3>
+          <p>Deixar a tabela do console "bonita" sem quebrar com nomes de tamanhos diferentes ou lista vazia exigiu calcular a largura de cada coluna dinamicamente, não fixa.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="contribuicao" class="section">
+      <h2>Onde eu contribuí de fato</h2>
+      <p class="section-intro">
+        O código foi implementado com apoio de IA (Claude Code). A contribuição humana
+        real foi:
+      </p>
+      <ul class="contrib-list">
+        <li>Decidi console em vez de front-end bonito, porque o teste avalia lógica Java, não interface.</li>
+        <li>Defini a arquitetura em pacotes (<code>model</code>/<code>service</code>/<code>util</code>/<code>exception</code>) e a regra de que nenhuma exceção deveria ter fallback silencioso.</li>
+        <li>Recusei reescrever as datas dos commits quando isso foi sugerido como forma de "parecer" que o trabalho levou mais tempo — decidi manter o histórico real.</li>
+        <li>Defini o estilo de commit (conventional commits, em inglês, sem atribuição de IA).</li>
+        <li>Validei manualmente os 12 requisitos do enunciado, calculando os valores esperados à mão e comparando com a saída real do programa, antes de considerar qualquer entrega pronta.</li>
+        <li>A responsabilidade pelas decisões técnicas e pela validação final foi minha.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="page-footer">
+    <div class="container">
+      <p>César Rodrigues Ribeiro &middot; <a href="https://github.com/Cluwt" target="_blank" rel="noopener">GitHub</a> &middot; <a href="https://www.linkedin.com/in/c%C3%A9sar-rodrigues-ribeiro-229b65282/" target="_blank" rel="noopener">LinkedIn</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
