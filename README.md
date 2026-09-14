@@ -1,8 +1,17 @@
 # Desafio Prático Iniflex
 
-Solução em Java para o **Teste Prático de Programação** da seleção Iniflex (processo via Gupy).
+Solução em Java para o **Teste Prático de Programação** do processo seletivo Iniflex, conduzido via plataforma Gupy.
 
-O desafio pede um pequeno sistema de console que cadastra funcionários de uma indústria e executa uma série de operações sobre essa lista: remoção, reajuste salarial, agrupamento, filtros, ordenação e cálculos estatísticos.
+O desafio consiste em um sistema de console que cadastra os funcionários de uma indústria e realiza uma série de operações sobre essa lista: remoção, reajuste salarial, agrupamento por função, filtros por data de nascimento, ordenação, cálculo de idade e totalizações financeiras.
+
+## Sobre o desenvolvedor
+
+**César Rodrigues Ribeiro**
+
+Java sempre foi a linguagem com a qual mais me identifiquei, e é também onde mais me dedico a evoluir tecnicamente. Este projeto foi desenvolvido com atenção à organização do código, às boas práticas de orientação a objetos e à clareza da solução — características que busco aplicar em qualquer desafio que eu assumo. Estou em busca de uma oportunidade para colocar esse conhecimento em prática em um time de desenvolvimento e contribuir de forma consistente.
+
+- LinkedIn: [linkedin.com/in/césar-rodrigues-ribeiro](https://www.linkedin.com/in/c%C3%A9sar-rodrigues-ribeiro-229b65282/)
+- GitHub: [github.com/Cluwt](https://github.com/Cluwt)
 
 ## Requisitos atendidos
 
@@ -22,7 +31,7 @@ O desafio pede um pequeno sistema de console que cadastra funcionários de uma i
 | 3.11 | Imprimir o total dos salários | ✅ |
 | 3.12 | Imprimir quantos salários mínimos (R$ 1.212,00) cada funcionário ganha | ✅ |
 
-> O item 3.7 não existe no enunciado original — a numeração pula de 3.6 para 3.8 de propósito.
+> O item 3.7 não consta no enunciado original — a numeração pula de 3.6 para 3.8 propositalmente.
 
 ## Estrutura do projeto
 
@@ -39,19 +48,19 @@ src/main/java/com/cluwt/iniflex/
     └── ConsolePrinter.java      # impressão de tabelas/títulos no console
 ```
 
-A separação existe para que cada camada tenha uma única responsabilidade: `model` só guarda dados, `service` só tem regra de negócio, `util` só formata e imprime, e `Principal` apenas orquestra — sem lógica de negócio nem formatação espalhada pelo `main`.
+A separação de pacotes segue o princípio de responsabilidade única: `model` armazena apenas dados, `service` concentra as regras de negócio, `util` cuida exclusivamente de formatação e apresentação, e `Principal` apenas orquestra a execução — sem lógica de negócio ou formatação espalhada pelo método `main`.
 
 ## Detalhes de implementação
 
-- **Dinheiro sempre em `BigDecimal`**, nunca `double`/`float`, para não haver erro de arredondamento no aumento de salário nem na soma total.
+- **Valores monetários sempre em `BigDecimal`**, nunca em `double`/`float`, evitando erros de arredondamento no cálculo do aumento salarial e na soma total.
 - **Formatação pt-BR** via `java.text.NumberFormat`/`DecimalFormat` (biblioteca padrão do Java, sem dependências externas) — separador de milhar `.` e decimal `,`.
-- **Ordenação alfabética** usa `java.text.Collator` no locale `pt-BR`, para tratar corretamente nomes acentuados (ex.: "Heloísa").
-- **Cálculo de idade** via `java.time.Period`, e o funcionário mais velho é obtido comparando a data de nascimento diretamente (menor data = mais velho).
-- **Tabelas de console** calculam a largura de cada coluna dinamicamente a partir dos dados recebidos — não há tamanho fixo, então a saída não quebra com listas vazias, nomes curtos ou longos.
+- **Ordenação alfabética** utiliza `java.text.Collator` no locale `pt-BR`, garantindo o tratamento correto de nomes acentuados (ex.: "Heloísa").
+- **Cálculo de idade** via `java.time.Period`; o funcionário mais velho é obtido comparando diretamente a data de nascimento (menor data = mais velho).
+- **Tabelas do console** calculam a largura de cada coluna dinamicamente a partir dos dados recebidos, sem tamanho fixo — a saída não quebra com listas vazias nem com nomes curtos ou longos.
 
 ## Tecnologias
 
-- Java 21 (compilado com o JDK 25 instalado localmente via `maven.compiler.release=21`)
+- Java 21 (compilado com JDK 25 via `maven.compiler.release=21`)
 - Maven 3.9+
 - Sem dependências externas
 
