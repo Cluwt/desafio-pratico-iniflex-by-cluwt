@@ -4,6 +4,8 @@ Solução em Java para o **Teste Prático de Programação** do processo seletiv
 
 O desafio consiste em um sistema de console que cadastra os funcionários de uma indústria e realiza uma série de operações sobre essa lista: remoção, reajuste salarial, agrupamento por função, filtros por data de nascimento, ordenação, cálculo de idade e totalizações financeiras.
 
+([Clique aqui para ver o rastreio dos commits + entendimento](https://cluwt.github.io/desafio-pratico-iniflex-by-cluwt/))
+
 ## Sobre o desenvolvedor
 
 **César Rodrigues Ribeiro**
@@ -43,12 +45,55 @@ src/main/java/com/cluwt/iniflex/
 │   └── Funcionario.java         # Pessoa + salário + função, com aumentarSalario()
 ├── service/
 │   └── FuncionarioService.java  # regras de negócio: filtrar, agrupar, ordenar, somar...
-└── util/
-    ├── Formatador.java          # formatação de data e moeda no padrão pt-BR
-    └── ConsolePrinter.java      # impressão de tabelas/títulos no console
+├── util/
+│   ├── Formatador.java          # formatação de data e moeda no padrão pt-BR
+│   └── ConsolePrinter.java      # impressão de tabelas/títulos no console
+└── exception/
+    ├── NegocioException.java                 # base abstrata das exceções de regra de negócio
+    ├── FuncionarioDuplicadoException.java     # nome já cadastrado
+    ├── FuncionarioNaoEncontradoException.java # busca/remoção por nome inexistente
+    └── ListaFuncionariosVaziaException.java   # operação que exige lista não-vazia
+
+src/test/java/com/cluwt/iniflex/
+├── PrincipalIntegrationTest.java   # roda o programa inteiro e confere a saída ponta a ponta
+├── model/ (PessoaTest, FuncionarioTest)
+├── service/FuncionarioServiceTest.java
+└── util/ (FormatadorTest, ConsolePrinterTest)
 ```
 
-A separação de pacotes segue o princípio de responsabilidade única: `model` armazena apenas dados, `service` concentra as regras de negócio, `util` cuida exclusivamente de formatação e apresentação, e `Principal` apenas orquestra a execução — sem lógica de negócio ou formatação espalhada pelo método `main`.
+A separação de pacotes segue o princípio de responsabilidade única: `model` armazena apenas dados, `service` concentra as regras de negócio, `util` cuida exclusivamente de formatação e apresentação, `exception` isola os erros de domínio em tipos próprios, e `Principal` apenas orquestra a execução — sem lógica de negócio ou formatação espalhada pelo método `main`.
+
+## Validações e exceções
+
+O projeto não tem fallback silencioso: qualquer estado inconsistente estoura uma exceção na hora em que é detectado, em vez de aplicar um valor padrão ou seguir em frente com um dado inválido.
+
+- **`IllegalArgumentException`** — lançada nos construtores de `Pessoa` e `Funcionario` quando nome, data de nascimento, salário ou função são nulos/vazios/negativos, ou quando a data de nascimento é futura.
+- **`FuncionarioDuplicadoException`** — lançada por `FuncionarioService.adicionar()` ao tentar cadastrar um nome que já existe na lista.
+- **`FuncionarioNaoEncontradoException`** — lançada por `FuncionarioService.removerPorNome()` quando o nome buscado não está na lista.
+- **`ListaFuncionariosVaziaException`** — lançada por `FuncionarioService.funcionarioMaisVelho()` quando a lista está vazia (substituiu uma `IllegalStateException` genérica usada numa versão anterior).
+
+`FuncionarioDuplicadoException`, `FuncionarioNaoEncontradoException` e `ListaFuncionariosVaziaException` estendem uma base comum, `NegocioException`, que existe para diferenciar "regra de negócio violada" de "argumento tecnicamente inválido" (`IllegalArgumentException`).
+
+## Testes
+
+O projeto tem 31 testes JUnit 5, cobrindo desde a validação de domínio até a execução completa do programa:
+
+| Classe de teste | O que cobre |
+|---|---|
+| `PessoaTest` | Validação de nome e data de nascimento (nulo, vazio, data futura) |
+| `FuncionarioTest` | Cálculo de aumento de salário e validação de salário/função/percentual |
+| `FuncionarioServiceTest` | Adicionar (com duplicidade), remover, agrupar, filtrar aniversariantes, achar o mais velho, ordenar, somar, calcular salários mínimos |
+| `FormatadorTest` | Formatação de data e moeda no padrão pt-BR |
+| `ConsolePrinterTest` | Tabela com cabeçalho e dados, lista vazia, nomes de tamanhos variados |
+| `PrincipalIntegrationTest` | Roda o `main()` inteiro e confere a saída contra valores calculados manualmente a partir do enunciado (soma total, funcionário mais velho, aniversariantes etc.) |
+
+```bash
+mvn test
+```
+
+## Processo de desenvolvimento
+
+A implementação do código foi feita com apoio de IA (Claude Code). O trabalho humano nesse processo foi definir a arquitetura e os requisitos não-funcionais do projeto (separação em pacotes, regra de "sem fallback silencioso" nas exceções, estilo de commit), revisar cada decisão técnica antes de aceitá-la, e validar manualmente a saída do programa — item por item do enunciado, com valores calculados à mão — antes de considerar qualquer entrega pronta.
 
 ## Detalhes de implementação
 
@@ -76,16 +121,6 @@ mvn exec:java
 # Ou gerar o .jar e rodar
 mvn package
 java -jar target/desafio-pratico-iniflex.jar
-```
-
-## Testes e validações
-
-O projeto valida os dados de entrada nas classes de domínio: nome, data de nascimento, salário e função não podem ser nulos/vazios/negativos, e cada violação lança uma exceção (`IllegalArgumentException` ou `FuncionarioNaoEncontradoException`) em vez de aplicar um valor padrão silenciosamente.
-
-Essas regras — junto com o cálculo de aumento, agrupamento, ordenação, filtro por aniversário e formatação — são cobertas por testes unitários com JUnit 5:
-
-```bash
-mvn test
 ```
 
 ## Exemplo de saída
