@@ -1,5 +1,6 @@
 package com.cluwt.iniflex.service;
 
+import com.cluwt.iniflex.exception.FuncionarioDuplicadoException;
 import com.cluwt.iniflex.exception.FuncionarioNaoEncontradoException;
 import com.cluwt.iniflex.exception.ListaFuncionariosVaziaException;
 import com.cluwt.iniflex.model.Funcionario;
@@ -27,6 +28,24 @@ class FuncionarioServiceTest {
         funcionarios.add(new Funcionario("João", LocalDate.of(1990, 5, 12), new BigDecimal("2284.38"), "Operador"));
         funcionarios.add(new Funcionario("Caio", LocalDate.of(1961, 5, 2), new BigDecimal("9836.14"), "Coordenador"));
         funcionarios.add(new Funcionario("Heloísa", LocalDate.of(2003, 5, 24), new BigDecimal("1606.85"), "Eletricista"));
+    }
+
+    @Test
+    void adicionarInsereFuncionarioComNomeNovo() {
+        Funcionario novo = new Funcionario("Bruno", LocalDate.of(1997, 2, 3), new BigDecimal("3000.00"), "Analista");
+
+        FuncionarioService.adicionar(funcionarios, novo);
+
+        assertEquals(5, funcionarios.size());
+        assertTrue(funcionarios.contains(novo));
+    }
+
+    @Test
+    void adicionarLancaExcecaoParaNomeDuplicado() {
+        Funcionario duplicado = new Funcionario("Maria", LocalDate.of(1980, 1, 1), new BigDecimal("1000.00"), "Analista");
+
+        assertThrows(FuncionarioDuplicadoException.class, () ->
+                FuncionarioService.adicionar(funcionarios, duplicado));
     }
 
     @Test
