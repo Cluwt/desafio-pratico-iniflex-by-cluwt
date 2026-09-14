@@ -1,6 +1,7 @@
 package com.cluwt.iniflex.service;
 
 import com.cluwt.iniflex.exception.FuncionarioNaoEncontradoException;
+import com.cluwt.iniflex.exception.ListaFuncionariosVaziaException;
 import com.cluwt.iniflex.model.Funcionario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ class FuncionarioServiceTest {
 
     @Test
     void funcionarioMaisVelhoLancaExcecaoParaListaVazia() {
-        assertThrows(IllegalStateException.class, () ->
+        assertThrows(ListaFuncionariosVaziaException.class, () ->
                 FuncionarioService.funcionarioMaisVelho(new ArrayList<>()));
     }
 
