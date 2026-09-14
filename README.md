@@ -62,7 +62,7 @@ A separação de pacotes segue o princípio de responsabilidade única: `model` 
 
 - Java 21 (compilado com JDK 25 via `maven.compiler.release=21`)
 - Maven 3.9+
-- Sem dependências externas
+- JUnit 5 (escopo de teste)
 
 ## Como compilar e executar
 
@@ -76,6 +76,16 @@ mvn exec:java
 # Ou gerar o .jar e rodar
 mvn package
 java -jar target/desafio-pratico-iniflex.jar
+```
+
+## Testes e validações
+
+O projeto valida os dados de entrada nas classes de domínio: nome, data de nascimento, salário e função não podem ser nulos/vazios/negativos, e cada violação lança uma exceção (`IllegalArgumentException` ou `FuncionarioNaoEncontradoException`) em vez de aplicar um valor padrão silenciosamente.
+
+Essas regras — junto com o cálculo de aumento, agrupamento, ordenação, filtro por aniversário e formatação — são cobertas por testes unitários com JUnit 5:
+
+```bash
+mvn test
 ```
 
 ## Exemplo de saída
