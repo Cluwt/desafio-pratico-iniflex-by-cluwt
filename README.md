@@ -78,16 +78,6 @@ mvn package
 java -jar target/desafio-pratico-iniflex.jar
 ```
 
-## Testes e validações
-
-O projeto valida os dados de entrada nas classes de domínio: nome, data de nascimento, salário e função não podem ser nulos/vazios/negativos, e cada violação lança uma exceção (`IllegalArgumentException` ou `FuncionarioNaoEncontradoException`) em vez de aplicar um valor padrão silenciosamente.
-
-Essas regras — junto com o cálculo de aumento, agrupamento, ordenação, filtro por aniversário e formatação — são cobertas por testes unitários com JUnit 5:
-
-```bash
-mvn test
-```
-
 ## Exemplo de saída
 
 ```
@@ -102,3 +92,15 @@ mvn test
 ╚════════════════════════════════╝
 • Total: R$ 50.906,82
 ```
+
+
+## Testes e validações
+
+O projeto valida os dados de entrada nas classes de domínio: nome, data de nascimento, salário e função não podem ser nulos/vazios/negativos, e cada violação lança uma exceção (`IllegalArgumentException` ou `FuncionarioNaoEncontradoException`) em vez de aplicar um valor padrão silenciosamente.
+
+Essas regras — junto com o cálculo de aumento, agrupamento, ordenação, filtro por aniversário e formatação — são cobertas por testes unitários com JUnit 5:
+
+```bash
+mvn test
+```
+
