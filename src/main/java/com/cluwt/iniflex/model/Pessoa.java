@@ -14,6 +14,9 @@ public class Pessoa {
         if (dataNascimento == null) {
             throw new IllegalArgumentException("Data de nascimento não pode ser nula");
         }
+        if (dataNascimento.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Data de nascimento não pode ser uma data futura");
+        }
         this.nome = nome;
         this.dataNascimento = dataNascimento;
     }

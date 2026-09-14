@@ -1,6 +1,8 @@
 package com.cluwt.iniflex.service;
 
+import com.cluwt.iniflex.exception.FuncionarioDuplicadoException;
 import com.cluwt.iniflex.exception.FuncionarioNaoEncontradoException;
+import com.cluwt.iniflex.exception.ListaFuncionariosVaziaException;
 import com.cluwt.iniflex.model.Funcionario;
 
 import java.math.BigDecimal;
@@ -24,6 +26,15 @@ public final class FuncionarioService {
     private static final BigDecimal SALARIO_MINIMO = new BigDecimal("1212.00");
 
     private FuncionarioService() {
+    }
+
+    public static void adicionar(List<Funcionario> funcionarios, Funcionario novoFuncionario) {
+        boolean jaExiste = funcionarios.stream()
+                .anyMatch(f -> f.getNome().equals(novoFuncionario.getNome()));
+        if (jaExiste) {
+            throw new FuncionarioDuplicadoException(novoFuncionario.getNome());
+        }
+        funcionarios.add(novoFuncionario);
     }
 
     public static void removerPorNome(List<Funcionario> funcionarios, String nome) {
@@ -62,7 +73,7 @@ public final class FuncionarioService {
     public static Funcionario funcionarioMaisVelho(List<Funcionario> funcionarios) {
         return funcionarios.stream()
                 .min(Comparator.comparing(Funcionario::getDataNascimento))
-                .orElseThrow(() -> new IllegalStateException("Lista de funcionários vazia"));
+                .orElseThrow(() -> new ListaFuncionariosVaziaException("buscar o funcionário mais velho"));
     }
 
     public static int calcularIdade(LocalDate dataNascimento) {
