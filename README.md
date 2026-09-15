@@ -4,9 +4,17 @@ Solução em Java para o **Teste Prático de Programação** do processo seletiv
 
 O desafio consiste em um sistema de console que cadastra os funcionários de uma indústria e realiza uma série de operações sobre essa lista: remoção, reajuste salarial, agrupamento por função, filtros por data de nascimento, ordenação, cálculo de idade e totalizações financeiras.
 
-([Clique aqui para ver o rastreio dos commits + entendimento](https://cluwt.github.io/desafio-pratico-iniflex-by-cluwt/))
-<img width="1902" height="620" alt="image" src="https://github.com/user-attachments/assets/724617b8-a7f0-4bcd-81fe-9d35d1978b5a" />
+---
 
+## Acompanhe o projeto através do link: 👉 [Acompanhar Desafio Prático Iniflex](https://cluwt.github.io/desafio-pratico-iniflex-by-cluwt/)
+
+<img width="1902" height="620" alt="image" src="https://github.com/user-attachments/assets/724617b8-a7f0-4bcd-81fe-9d35d1978b5a" />
+<img width="1607" height="908" alt="image" src="https://github.com/user-attachments/assets/7e4f6851-3766-48bd-a262-3a1f9f945546" />
+<p align="center">
+  <img width="745" height="402" alt="image" src="https://github.com/user-attachments/assets/a4e225b7-5160-48a6-b21e-842d22e1e498" />
+</p>
+
+---
 
 ## Sobre o desenvolvedor
 
