@@ -101,9 +101,6 @@ O projeto tem 31 testes JUnit 5, cobrindo desde a validação de domínio até a
 mvn test
 ```
 
-## Processo de desenvolvimento
-
-A implementação do código foi feita com apoio de IA (Claude Code). O trabalho humano nesse processo foi definir a arquitetura e os requisitos não-funcionais do projeto (separação em pacotes, regra de "sem fallback silencioso" nas exceções, estilo de commit), revisar cada decisão técnica antes de aceitá-la, e validar manualmente a saída do programa — item por item do enunciado, com valores calculados à mão — antes de considerar qualquer entrega pronta.
 
 ## Detalhes de implementação
 
