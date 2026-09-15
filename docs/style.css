@@ -487,15 +487,19 @@ h1, h2, h3 {
   margin-top: -6px;
   margin-bottom: 24px;
   max-width: 68ch;
+  margin-inline: auto;
+  text-align: left;
 }
 
 .wrap-narrow > p {
   max-width: 68ch;
+  margin-inline: auto;
+  text-align: left;
 }
 
 .repo-link {
-  display: inline-block;
-  margin-top: 8px;
+  display: table;
+  margin: 8px auto 0;
   color: var(--accent);
   font-weight: 700;
   text-decoration: none;
